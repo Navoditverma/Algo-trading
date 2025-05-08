@@ -1,15 +1,41 @@
 # backend/app/api/routes/strategies.py
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query,Depends
 import app.services.alpaca_client as api
 from app.strategies import sma_crossover, rsi_strategy,bollinger,momentum,ml_predictor
 import pandas as pd
+from datetime import datetime
+import random
+from sqlalchemy.orm import Session
+from app.db.session import get_db
+from app.db import models  
 
 router = APIRouter()
 
 @router.get("/list")
 def get_strategies():
-    return ["sma_crossover", "rsi_strategy", "bollinger_band", "momentum", "ml_predictor"]
+    strategy_names = [
+        "sma_crossover",
+        "rsi_strategy",
+        "bollinger_band",
+        "momentum",
+        "ML_predictor"
+    ]
+
+    def generate_mock_strategy(name):
+        return {
+            "id": name,
+            "name": name.replace("_", " ").title(),
+            "createdAt": datetime.utcnow().isoformat(),
+            "performance": {
+                "pnl": round(random.uniform(-5, 15), 2),
+                "sharpe_ratio": round(random.uniform(0.5, 2.0), 2),
+                "trades": random.randint(10, 50)
+            }
+        }
+
+    return [generate_mock_strategy(name) for name in strategy_names]
+
 
 @router.post("/run")
 def run_strategy(
@@ -21,13 +47,12 @@ def run_strategy(
 ):
     try:
         # Check if symbol is a cryptocurrency pair (contains '/')
-        if '/' in symbol:
             # For cryptocurrency pairs like BTC/USD
-            bars = api.get_crypto_bars(symbol, timeframe, start=start_date, end=end_date).df
-        else:
-            # For stock symbols like AAPL
-            bars = api.get_bars(symbol, timeframe, start=start_date, end=end_date).df  # use get_bars instead of get_barset
+        symbol = symbol.upper().strip()
+        full_symbol = symbol 
+        print(full_symbol)
 
+        bars = api.get_crypto_bars(full_symbol, timeframe, start=start_date, end=end_date).df
         # Remove duplicate columns if any
         bars = bars.loc[:, ~bars.columns.duplicated()]  # Remove duplicate columns
 
@@ -63,6 +88,23 @@ def run_strategy(
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+db: Session = Depends(get_db)
+
+@router.get("/strategies/stats/{strategy_name}")
+def get_strategy_stats(strategy_name: str, db: Session = Depends(get_db)):
+    trades = db.query(models.TradeHistory).filter(models.TradeHistory.strategy_name == strategy_name).all()
+    total_pnl = sum([t.pnl for t in trades])
+    trade_count = len(trades)
+    return {
+        "strategy": strategy_name,
+        "pnl": total_pnl,
+        "trades": trade_count
+    }
 
 
-# curl -X POST "http://127.0.0.1:8000/strategies/run?strategy_name=bollinger_band&symbol=BTC/USD&start_date=2024-01-01&end_date=2024-05-01&timeframe=1Day"# curl -X POST "http://127.0.0.1:8000/strategies/run?strategy_name=momentum&symbol=BTC/USD&start_date=2024-01-01&end_date=2024-05-01&timeframe=1Day"
+
+# curl -X POST "http://127.0.0.1:8000/strategies/run?strategy_name=sma_crossover&symbol=BTC/USD&start_date=2024-01-01&end_date=2024-05-01&timeframe=1Day"
+
+
+# uvicorn app.main:app --reload --host 0.0.0.0 --port 8000

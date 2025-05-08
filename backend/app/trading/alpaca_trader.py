@@ -1,7 +1,12 @@
 # backend/app/trading/alpaca_trader.py
-
+from fastapi import Depends
 import alpaca_trade_api as tradeapi
 from app.api.deps import get_settings
+from sqlalchemy.orm import Session
+from app.db.session import get_db
+from app.db import crud
+
+db: Session = Depends(get_db)
 
 class AlpacaTrader:
     def __init__(self):
@@ -15,18 +20,34 @@ class AlpacaTrader:
         account = self.api.get_account()
         return account
 
-    def place_order(self, symbol: str, qty: float, side: str, order_type: str = "market", time_in_force: str = "gtc"):
+    def place_order(self, symbol: str, qty: float, side: str, strategy_name: str, db: Session):
         try:
             order = self.api.submit_order(
                 symbol=symbol,
                 qty=qty,
                 side=side,
-                type=order_type,
-                time_in_force=time_in_force
+                type="market",
+                time_in_force="gtc"
             )
+
+        
+            filled_price = 0.0  
+            pnl = 0.0 
+
+            crud.create_trade(
+                db=db,
+                symbol=symbol,
+                qty=qty,
+                side=side,
+                price=filled_price,
+                strategy_name=strategy_name,
+                pnl=pnl
+            )
+
             return order
         except Exception as e:
             return {"error": str(e)}
+
 
     def get_positions(self):
         positions = self.api.list_positions()

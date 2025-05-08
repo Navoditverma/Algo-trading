@@ -8,25 +8,40 @@ from datetime import datetime
 from alpaca.data.historical import CryptoHistoricalDataClient
 from alpaca.data.requests import CryptoBarsRequest
 from alpaca.data.timeframe import TimeFrame
+from alpaca.trading.client import TradingClient
+from alpaca.trading.requests import MarketOrderRequest
+from alpaca.trading.enums import OrderSide, TimeInForce
 
 API_KEY = os.getenv("APCA_API_KEY_ID")
 SECRET_KEY = os.getenv("APCA_API_SECRET_KEY")
 BASE_URL = os.getenv("APCA_API_BASE_URL")
 print("API AND SCREET KEY ARE ",API_KEY,SECRET_KEY)
+trading_client = TradingClient(API_KEY, SECRET_KEY, paper=True)
 
 api = REST(API_KEY, SECRET_KEY, BASE_URL)
 crypto_client = CryptoHistoricalDataClient(API_KEY, SECRET_KEY)
 
 def place_order(symbol: str, qty: float, side: str):
     try:
-        order = api.submit_order(
-            symbol=symbol,
-            qty=qty,
-            side=side,  # 'buy' or 'sell'
-            type='market',
-            time_in_force='gtc'
-        )
-        return {"status": "success", "order_id": order.id}
+        print("Placing Order")
+        market_order_data = MarketOrderRequest(
+                    symbol=symbol,
+                    qty=qty,
+                    side=OrderSide.BUY if side.lower() == "buy" else OrderSide.SELL,
+                    time_in_force=TimeInForce.DAY
+                    )
+        market_order = trading_client.submit_order(
+                order_data=market_order_data
+               )
+        print("Placed")
+
+        return {
+            "status": "success",
+            "order_id": market_order.id,
+            "filled_avg_price": getattr(market_order, "filled_avg_price", None),
+            "price": getattr(market_order, "price", None),
+            }
+
     except Exception as e:
         return {"status": "error", "message": str(e)}
 def get_account():

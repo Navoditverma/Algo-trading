@@ -1,0 +1,240 @@
+[
+    {
+        "timestamp": "2025-05-05T19:10:38.032952",
+        "symbol": "BTC",
+        "strategy": "bollinger_band",
+        "start_date": "2023-10-01",
+        "end_date": "2024-10-01",
+        "final_balance": 14856.64211980443,
+        "performance_metrics": {
+            "total_profit_loss": 4856.64211980443,
+            "total_returns": 0.485664211980443,
+            "individual_trade_profits": [
+                7253.571895690172,
+                -2360.9067630722448,
+                -36.02301281349739
+            ],
+            "average_trade_profit": 1618.8807066014767,
+            "number_of_trades": 6
+        }
+    },
+    {
+        "timestamp": "2025-05-05T19:10:53.425135",
+        "symbol": "BTC",
+        "strategy": "momentum",
+        "start_date": "2023-10-01",
+        "end_date": "2024-10-01",
+        "final_balance": 17520.500726168993,
+        "performance_metrics": {
+            "total_profit_loss": 7520.500726168993,
+            "total_returns": 0.7520500726168994,
+            "individual_trade_profits": [
+                4532.429889316,
+                -90.10347341762541,
+                -169.55063254427796,
+                -386.03375044661936,
+                332.3914736334748,
+                -330.2260507178832,
+                -399.63381506428595,
+                6981.619425253788,
+                -167.543909354402,
+                -1388.5814648330331,
+                425.56168525494024,
+                -811.2032556955091,
+                -942.5119612063143,
+                2032.1634730117123,
+                -1031.3138010787552,
+                369.6190266129481,
+                -876.4661894064753,
+                658.7245014575042,
+                -1357.393487179225,
+                -234.33691535640585,
+                -557.0971886867294,
+                929.987146616162
+            ],
+            "average_trade_profit": 341.84094209859035,
+            "number_of_trades": 44
+        }
+    },
+    {
+        "timestamp": "2025-05-05T19:10:56.993493",
+        "symbol": "BTC",
+        "strategy": "rsi_strategy",
+        "start_date": "2023-10-01",
+        "end_date": "2024-10-01",
+        "final_balance": 14345.04463590138,
+        "performance_metrics": {
+            "total_profit_loss": 4345.04463590138,
+            "total_returns": 0.43450446359013806,
+            "individual_trade_profits": [
+                2212.624478349154,
+                1843.5846566633902,
+                288.8355008888363
+            ],
+            "average_trade_profit": 1448.3482119671269,
+            "number_of_trades": 6
+        }
+    },
+    {
+        "timestamp": "2025-05-05T19:11:00.434868",
+        "symbol": "BTC",
+        "strategy": "sma_crossover",
+        "start_date": "2023-10-01",
+        "end_date": "2024-10-01",
+        "final_balance": 10143.290074348042,
+        "performance_metrics": {
+            "total_profit_loss": 143.29007434804225,
+            "total_returns": 0.014329007434804225,
+            "individual_trade_profits": [
+                2979.829619039877,
+                -1337.6835148329417,
+                -1554.7003920800541,
+                55.844362221160296
+            ],
+            "average_trade_profit": 35.822518587010336,
+            "number_of_trades": 8
+        }
+    },
+    {
+        "timestamp": "2025-05-05T19:11:04.499423",
+        "symbol": "BTC",
+        "strategy": "ml_predictor",
+        "start_date": "2023-10-01",
+        "end_date": "2024-10-01",
+        "final_balance": 23022.26478904154,
+        "performance_metrics": {
+            "total_profit_loss": 13022.26478904154,
+            "total_returns": 1.302226478904154,
+            "individual_trade_profits": [
+                13022.264789041541
+            ],
+            "average_trade_profit": 13022.264789041541,
+            "number_of_trades": 2
+        }
+    },
+    {
+        "timestamp": "2025-05-05T19:11:05.763545",
+        "symbol": "BTC",
+        "strategy": "ml_predictor",
+        "start_date": "2023-10-01",
+        "end_date": "2024-10-01",
+        "final_balance": 23022.26478904154,
+        "performance_metrics": {
+            "total_profit_loss": 13022.26478904154,
+            "total_returns": 1.302226478904154,
+            "individual_trade_profits": [
+                13022.264789041541
+            ],
+            "average_trade_profit": 13022.264789041541,
+            "number_of_trades": 2
+        }
+    },
+    {
+        "timestamp": "2025-05-05T19:11:06.859547",
+        "symbol": "BTC",
+        "strategy": "ml_predictor",
+        "start_date": "2023-10-01",
+        "end_date": "2024-10-01",
+        "final_balance": 23022.26478904154,
+        "performance_metrics": {
+            "total_profit_loss": 13022.26478904154,
+            "total_returns": 1.302226478904154,
+            "individual_trade_profits": [
+                13022.264789041541
+            ],
+            "average_trade_profit": 13022.264789041541,
+            "number_of_trades": 2
+        }
+    },
+    {
+        "timestamp": "2025-05-05T19:54:34.469418",
+        "symbol": "BTC",
+        "strategy": "rsi_strategy",
+        "start_date": "2021-01-01",
+        "end_date": "2022-01-01",
+        "final_balance": 9245.16001146993,
+        "performance_metrics": {
+            "total_profit_loss": -754.8399885300696,
+            "total_returns": -0.07548399885300697,
+            "individual_trade_profits": [
+                -1488.5079537156234,
+                2543.011609250793,
+                -1809.3436440652388
+            ],
+            "average_trade_profit": -251.61332951002314,
+            "number_of_trades": 6
+        }
+    },
+    {
+        "timestamp": "2025-05-05T19:56:20.075700",
+        "symbol": "BTC",
+        "strategy": "rsi_strategy",
+        "start_date": "2021-01-01",
+        "end_date": "2022-01-01",
+        "final_balance": 9245.16001146993,
+        "performance_metrics": {
+            "total_profit_loss": -754.8399885300696,
+            "total_returns": -0.07548399885300697,
+            "individual_trade_profits": [
+                -1488.5079537156234,
+                2543.011609250793,
+                -1809.3436440652388
+            ],
+            "average_trade_profit": -251.61332951002314,
+            "number_of_trades": 6
+        }
+    },
+    {
+        "timestamp": "2025-05-05T19:56:43.107601",
+        "symbol": "BTC",
+        "strategy": "rsi_strategy",
+        "start_date": "2021-01-01",
+        "end_date": "2022-01-01",
+        "final_balance": 9245.16001146993,
+        "performance_metrics": {
+            "total_profit_loss": -754.8399885300696,
+            "total_returns": -0.07548399885300697,
+            "individual_trade_profits": [
+                -1488.5079537156234,
+                2543.011609250793,
+                -1809.3436440652388
+            ],
+            "average_trade_profit": -251.61332951002314,
+            "number_of_trades": 6
+        }
+    },
+    {
+        "timestamp": "2025-05-05T19:57:42.189840",
+        "symbol": "BTC",
+        "strategy": "rsi_strategy",
+        "start_date": "2021-01-01",
+        "end_date": "2022-01-01",
+        "final_balance": 9245.16001146993,
+        "performance_metrics": {
+            "total_profit_loss": -754.8399885300696,
+            "total_returns": -0.07548399885300697,
+            "individual_trade_profits": [
+                -1488.5079537156234,
+                2543.011609250793,
+                -1809.3436440652388
+            ],
+            "average_trade_profit": -251.61332951002314,
+            "number_of_trades": 6
+        }
+    },
+    {
+        "timestamp": "2025-05-05T19:58:39.553046",
+        "symbol": "BTC",
+        "strategy": "bollinger_band",
+        "start_date": "2022-12-02",
+        "end_date": "2023-02-02",
+        "final_balance": 10000,
+        "performance_metrics": {
+            "total_profit_loss": 0,
+            "total_returns": 0.0,
+            "individual_trade_profits": [],
+            "average_trade_profit": 0,
+            "number_of_trades": 0
+        }
+    }
+]

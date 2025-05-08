@@ -1,8 +1,6 @@
-# backend/init_db.py
-
-from app.db.session import engine
 from app.db.models import Base
+from app.db.session import engine
 
 print("Creating all tables...")
 Base.metadata.create_all(bind=engine)
-print("Done.")
+print("✅ Done.")

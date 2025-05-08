@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: algo-backend
+    env: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    envVars:
+      - key: APCA_API_KEY_ID
+        value: your-alpaca-key
+      - key: APCA_API_SECRET_KEY
+        value: your-alpaca-secret
+      - key: APCA_API_BASE_URL
+        value: https://paper-api.alpaca.markets
+    repo: your-github-url

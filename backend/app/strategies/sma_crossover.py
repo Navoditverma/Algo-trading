@@ -1,48 +1,60 @@
-# backend/app/strategies/sma_crossover.py
-
 import pandas as pd
 
 def sma_crossover_strategy(df: pd.DataFrame):
     """
-    Simple Moving Average Crossover Strategy
-    - Buy when short-term SMA crosses above long-term SMA
-    - Sell when short-term SMA crosses below long-term SMA
+    SMA Crossover Strategy
+    - Buy when short SMA crosses above long SMA
+    - Sell when short SMA crosses below long SMA
     """
-    short_window = 50
-    long_window = 100
-    print("Length of dataset:", len(df))
 
+    short_window = 20
+    long_window = 50
+    strong_threshold = 0.01  # 1% threshold for strong signals
 
-    # Ensure enough data for short SMA
-    if len(df) < short_window:
-        raise ValueError(f"Not enough data for short-term SMA (requires {short_window} data points)")
+    # Remove duplicate columns
+    df = df.loc[:, ~df.columns.duplicated()].copy()
 
-    # If not enough data for long SMA, adjust to available data
-    if len(df) < long_window:
-        print(f"Warning: Not enough data for long-term SMA. Using available data length ({len(df)}).")
-        long_window = len(df)
+    # Ensure proper datetime format and sort
+    df['date'] = pd.to_datetime(df['date'])
+    df = df.sort_values('date').reset_index(drop=True)
 
-    # Compute short and long moving averages
+    # Check data length
+    if len(df) < long_window + 1:
+        raise ValueError("Not enough data to compute long SMA.")
+
+    # Compute SMAs
     df['short_sma'] = df['close'].rolling(window=short_window).mean()
     df['long_sma'] = df['close'].rolling(window=long_window).mean()
 
-    # Debugging: Print the short and long SMAs for inspection
-    print(df[['date', 'short_sma', 'long_sma']].tail(50))    # Print first 60 rows for better visibility
+    df['signal'] = 0  # Default to Hold
 
-    # Generate signals based on crossovers
-    df['signal'] = 0
-
-    # Detect crossover - check for short SMA crossing above long SMA (buy) and below (sell)
     for i in range(1, len(df)):
-        if df['short_sma'][i] > df['long_sma'][i] and df['short_sma'][i-1] <= df['long_sma'][i-1]:
-            print(f"Buy Signal: {df['date'][i]} - Short SMA: {df['short_sma'][i]} > Long SMA: {df['long_sma'][i]}")
-            df.at[i, 'signal'] = 1  # Buy signal
-        elif df['short_sma'][i] < df['long_sma'][i] and df['short_sma'][i-1] >= df['long_sma'][i-1]:
-            print(f"Sell Signal: {df['date'][i]} - Short SMA: {df['short_sma'][i]} < Long SMA: {df['long_sma'][i]}")
-            df.at[i, 'signal'] = -1  # Sell signal
+        prev_short = df.at[i - 1, 'short_sma']
+        prev_long = df.at[i - 1, 'long_sma']
+        curr_short = df.at[i, 'short_sma']
+        curr_long = df.at[i, 'long_sma']
 
-    # Add position (buy or sell action based on signal change)
-    df['position'] = df['signal'].diff()
-    print(df[['date', 'short_sma', 'long_sma']].isna().sum())
+        # Only proceed if values are not NaN
+        if pd.notna(prev_short) and pd.notna(prev_long) and pd.notna(curr_short) and pd.notna(curr_long):
+            # BUY signal: crossover up
+            if curr_short > curr_long and prev_short <= prev_long:
+                spread = abs(curr_short - curr_long) / curr_long
+                df.at[i, 'signal'] = 2 if spread > strong_threshold else 1
+                print(f"BUY {'STRONG' if spread > strong_threshold else 'WEAK'} @ {df.at[i, 'date']} | Spread: {spread:.4f}")
+            # SELL signal: crossover down
+            elif curr_short < curr_long and prev_short >= prev_long:
+                spread = abs(curr_short - curr_long) / curr_long
+                df.at[i, 'signal'] = -2 if spread > strong_threshold else -1
+                print(f"SELL {'STRONG' if spread > strong_threshold else 'WEAK'} @ {df.at[i, 'date']} | Spread: {spread:.4f}")
 
-    return df
+    # Label mapping for readability
+    signal_map = {
+        2: 'Strong Buy',
+        1: 'Buy',
+        0: 'Hold',
+        -1: 'Sell',
+        -2: 'Strong Sell'
+    }
+    df['signal_label'] = df['signal'].map(signal_map)
+
+    return df[['date', 'close', 'short_sma', 'long_sma', 'signal', 'signal_label']]
