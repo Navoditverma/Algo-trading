@@ -2,14 +2,21 @@ services:
   - type: web
     name: algo-backend
     env: python
-    plan: free
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r backend/requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
     envVars:
       - key: APCA_API_KEY_ID
-        value: your-alpaca-key
+        value: your_alpaca_api_key_id
       - key: APCA_API_SECRET_KEY
-        value: your-alpaca-secret
+        value: your_alpaca_api_secret_key
       - key: APCA_API_BASE_URL
         value: https://paper-api.alpaca.markets
-    repo: your-github-url
+
+  - type: web
+    name: algo-frontend
+    env: node
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npm run start
+    envVars:
+      - key: NEXT_PUBLIC_API_BASE_URL
+        value: https://algo-backend.onrender.com 
