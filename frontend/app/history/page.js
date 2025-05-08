@@ -8,7 +8,7 @@ export default function HistoryPage() {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/history/backtests'); // Update if needed
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/history/backtests`); // Update if needed
         const data = await res.json();
         if (!Array.isArray(data)) {
           throw new Error("Expected array but got: " + JSON.stringify(data));

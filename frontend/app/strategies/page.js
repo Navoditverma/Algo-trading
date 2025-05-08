@@ -12,7 +12,7 @@ export default function StrategiesPage() {
 
   const fetchStrategies = async () => {
     try {
-      const  res = await (await fetch('http://127.0.0.1:8000/strategies/list')).json()
+      const  res = await (await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/strategies/list`)).json()
       console.log("Resule",res)
       setStrategies(res)
     } catch (error) {

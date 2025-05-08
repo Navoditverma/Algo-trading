@@ -16,7 +16,7 @@ export default function BacktestPage() {
   
 
   useEffect(() => {
-    axios.get('http://localhost:8000/strategies/list')
+    axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/strategies/list`)
       .then((res) => {
         // Convert list of names to objects with id + name
         const formatted = res.data.map((item, index) => ({
@@ -31,7 +31,7 @@ export default function BacktestPage() {
   const runBacktest = async () => {
     setLoading(true);
     try {
-      const res = await axios.post(`http://localhost:8000/backtest/run`, null, {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/backtest/run`, null, {
         params: {
           symbol,
           strategy_name: selectedStrategy,

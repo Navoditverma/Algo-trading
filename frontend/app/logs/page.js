@@ -7,7 +7,7 @@ export default function LogsPage() {
   useEffect(() => {
     const fetchLogs = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/logs/log");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/logs/log`);
         const text = await res.text();
         setLogs(text);
       } catch (err) {

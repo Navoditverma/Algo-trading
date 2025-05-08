@@ -13,7 +13,7 @@ export default function LiveTradingPage() {
   const [logs, setLogs] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/strategies/list')
+    axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/strategies/list`)
       .then((res) => {
         // Convert list of names to objects with id + name
         const formatted = res.data.map((item, index) => ({
@@ -30,7 +30,7 @@ export default function LiveTradingPage() {
     try {
       setLogs([]); 
       setLogs((prev) => [...prev, `Analyzing chart for ${symbol} using ${selectedStrategy} strategy...`]);
-      await axios.post(`http://localhost:8000/trading/start?symbol=${symbol}&strategy_name=${selectedStrategy}`)
+      await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/trading/start?symbol=${symbol}&strategy_name=${selectedStrategy}`)
       setIsTrading(true)
       setLogs((prev) => [...prev, `Placing order for ${symbol}`]);
 
@@ -41,7 +41,7 @@ export default function LiveTradingPage() {
 
   const stopTrading = async () => {
     try {
-      await axios.get(`http://localhost:8000/trading/stop?strategy_name=${selectedStrategy}`);
+      await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/trading/stop?strategy_name=${selectedStrategy}`);
       setIsTrading(false);
     } catch (err) {
       alert('Failed to stop trading.');
